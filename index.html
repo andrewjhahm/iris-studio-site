@@ -33,6 +33,7 @@
   DO NOT BREAK
     · LocalBusiness JSON-LD in <head>
     · sms: and tel: deep links to (650) 479-6155  (the booking funnel)
+    · FORM_ENDPOINT in the closing script (the Apps Script /exec URL)
     · /?src=card QR landing behavior (business cards + EDDM postcard)
     · CNAME / custom domain  (email forwarding lives on Namecheap DNS)
     · iris-hero.jpg and iris-about.jpg must ship alongside this file
@@ -350,6 +351,29 @@ h2+.lead{margin-top:18px}
 .contact .btn-g:hover{color:var(--navy)}
 .cbox .mail{margin-top:26px;font-size:15px;color:rgba(250,247,240,.66)}
 .cbox .mail a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(196,161,90,.42)}
+/* contact form */
+.finq{margin-top:40px;padding-top:34px;border-top:1px solid rgba(169,133,59,.28);text-align:left}
+.finq .fh{text-align:center;font-family:var(--display);font-size:21px;color:var(--ivory);letter-spacing:.01em}
+.finq .fs{text-align:center;font-size:13.5px;color:rgba(250,247,240,.56);margin-top:8px;letter-spacing:.04em}
+.finq form{margin-top:28px;display:flex;flex-direction:column;gap:13px}
+.finq .row{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.finq input,.finq select,.finq textarea{width:100%;font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ivory);background:rgba(250,247,240,.05);border:1px solid rgba(250,247,240,.2);border-radius:2px;padding:13px 15px;transition:border-color .35s var(--ease),background .35s var(--ease)}
+.finq input::placeholder,.finq textarea::placeholder{color:rgba(250,247,240,.44)}
+.finq input:focus,.finq select:focus,.finq textarea:focus{outline:none;border-color:var(--gold-lt);background:rgba(250,247,240,.08)}
+.finq select{-webkit-appearance:none;appearance:none;color:rgba(250,247,240,.44);background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23C4A15A' stroke-width='1.6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;background-size:11px;padding-right:38px}
+.finq select.set{color:var(--ivory)}
+.finq select option{color:#1C2B4A;background:#FAF7F0}
+.finq textarea{resize:vertical;min-height:106px;line-height:1.6}
+.finq .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.finq button{margin-top:6px;cursor:pointer;border:none;font-family:var(--sans);font-size:15px;letter-spacing:.02em;padding:16px 30px;border-radius:2px;background:var(--gold);color:var(--white);transition:background .4s var(--ease),transform .4s var(--ease)}
+.finq button:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.finq button:disabled{opacity:.55;cursor:default;transform:none}
+.finq .fmsg{font-size:13.5px;color:rgba(250,247,240,.58);text-align:center;margin-top:6px}
+.finq .fmsg a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(196,161,90,.42)}
+.finq .thanks{text-align:center;font-family:var(--display);font-size:23px;color:var(--ivory);padding:30px 0}
+.finq .thanks span{display:block;font-family:var(--sans);font-size:14.5px;font-weight:300;line-height:1.65;color:rgba(250,247,240,.62);margin-top:12px}
+@media(max-width:820px){.finq{padding-bottom:74px}}
+@media(max-width:620px){.finq .row{grid-template-columns:1fr}}
 
 /* footer */
 footer{background:var(--navy-deep);color:rgba(250,247,240,.6);border-top:1px solid rgba(169,133,59,.24);padding:52px 0 108px;text-align:center;font-size:14.5px}
@@ -658,6 +682,33 @@ footer a:hover{color:var(--gold-lt)}
       <a class="btn btn-g" href="tel:+16504796155"><span class="lbl">Call</span></a>
     </div>
     <p class="mail">or email <a href="mailto:lessons@irislinmusic.com">lessons@irislinmusic.com</a></p>
+
+    <div class="finq">
+      <div class="fh">Prefer to write it out?</div>
+      <div class="fs">Send the details and Iris will reply within a day.</div>
+      <form id="inq" autocomplete="on" novalidate>
+        <div class="row">
+          <input name="name" type="text" placeholder="Your name" autocomplete="name" required>
+          <input name="email" type="email" placeholder="Your email" autocomplete="email" required>
+        </div>
+        <div class="row">
+          <input name="phone" type="tel" placeholder="Your phone" autocomplete="tel">
+          <select name="instrument" required>
+            <option value="" disabled selected>Instrument</option>
+            <option>Piano</option>
+            <option>Violin</option>
+            <option>Viola</option>
+            <option>Piano and violin</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <input name="age" type="text" placeholder="Student's age" inputmode="numeric" autocomplete="off">
+        <textarea name="message" rows="4" placeholder="Tell Iris about the student: any experience so far, what you are hoping for, and when you are free." required></textarea>
+        <input name="website" type="text" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit">Send inquiry</button>
+        <div class="fmsg" id="fmsg">Or text <a href="sms:+16504796155">(650) 479-6155</a> for the fastest reply.</div>
+      </form>
+    </div>
   </div>
 </div></section>
 
@@ -741,6 +792,39 @@ footer a:hover{color:var(--gold-lt)}
       if(!open){ fq.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
     });
   });
+
+  /* inquiry form. Posts to a Google Apps Script web app bound to the
+     "irislinmusic.com inquiries" Sheet, which appends a row and emails
+     Andrew, Iris and lessons@. Redeploying that script mints a NEW /exec
+     URL, so FORM_ENDPOINT below must be re-pasted whenever it is redeployed.
+     A hidden field named "website" is a honeypot: bots fill it, humans
+     never see it, and a filled value is dropped server side. */
+  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbzPJyU4F-gzxiqqXfNtdUjHF0ndwBiDFRGWgy1Zb9AIn1VKXtjolLlcqeBqYagki6bpPw/exec";
+  var inq = document.getElementById('inq');
+  if(inq){
+    var sel = inq.querySelector('select[name=instrument]');
+    sel.addEventListener('change', function(){ sel.classList.add('set'); });
+    inq.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      if(inq.website.value) return;
+      if(!inq.checkValidity()){ inq.reportValidity(); return; }
+      var btn = inq.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      var fd = new FormData(inq);
+      fd.set('page', location.pathname + location.search);
+      fd.set('ua', navigator.userAgent);
+      fetch(FORM_ENDPOINT, {method:'POST', mode:'no-cors', body:new URLSearchParams(fd)})
+        .then(function(){
+          inq.innerHTML = '<div class="thanks">Thank you.<span>Iris will be in touch within a day. If it is urgent, text (650) 479-6155.</span></div>';
+        })
+        .catch(function(){
+          btn.disabled = false;
+          btn.textContent = 'Send inquiry';
+          document.getElementById('fmsg').innerHTML = 'Something went wrong. Please text <a href="sms:+16504796155">(650) 479-6155</a> instead.';
+        });
+    });
+  }
 
   /* ?src=card — QR landing from business cards and the EDDM postcard.
      Kept inert visually; tagged for analytics later. */
