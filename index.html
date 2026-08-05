@@ -446,7 +446,7 @@ footer a:hover{color:var(--gold-lt)}
     <a href="#reviews">Reviews</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a class="navcta" href="sms:+16504796155">Text to book</a>
+  <a class="navcta" href="#contact">Book a free trial</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -673,7 +673,7 @@ footer a:hover{color:var(--gold-lt)}
 <section class="contact" id="contact"><div class="wrap ctr">
   <div class="rule r"><i></i><span class="dia"></span></div>
   <h2 class="r" style="--d:.06s">Book the <em>free</em> trial lesson</h2>
-  <p class="lead r" style="--d:.12s">A quick text is all it takes. Send the student's age, the instrument, and what you are hoping for.</p>
+  <p class="lead r" style="--d:.12s">Text, call, or send the details below. Include the student's age, the instrument, and what you are hoping for.</p>
   <div class="cbox r" style="--d:.18s">
     <a class="tel" href="tel:+16504796155">(650) 479-6155</a>
     <p class="note">Call or text · Iris replies within a day</p>
@@ -705,7 +705,7 @@ footer a:hover{color:var(--gold-lt)}
         <input name="age" type="text" placeholder="Student's age" inputmode="numeric" autocomplete="off">
         <textarea name="message" rows="4" placeholder="Tell Iris about the student: any experience so far, what you are hoping for, and when you are free." required></textarea>
         <input name="website" type="text" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button type="submit">Send inquiry</button>
+        <button type="submit">Request the free trial</button>
         <div class="fmsg" id="fmsg">Or text <a href="sms:+16504796155">(650) 479-6155</a> for the fastest reply.</div>
       </form>
     </div>
@@ -820,7 +820,7 @@ footer a:hover{color:var(--gold-lt)}
         })
         .catch(function(){
           btn.disabled = false;
-          btn.textContent = 'Send inquiry';
+          btn.textContent = 'Request the free trial';
           document.getElementById('fmsg').innerHTML = 'Something went wrong. Please text <a href="sms:+16504796155">(650) 479-6155</a> instead.';
         });
     });
